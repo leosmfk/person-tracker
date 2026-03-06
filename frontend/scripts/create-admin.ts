@@ -2,11 +2,16 @@
  * Script manual para criar o usuario admin inicial.
  * Uso: bun run scripts/create-admin.ts
  */
+import "dotenv/config";
 import { PrismaClient } from "../generated/prisma/client";
-import { scryptAsync } from "@noble/hashes/scrypt";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { scryptAsync } from "@noble/hashes/scrypt.js";
 import { randomBytes } from "crypto";
 
-const prisma = new PrismaClient();
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
+const prisma = new PrismaClient({ adapter });
 
 async function hashPassword(password: string): Promise<string> {
   const salt = randomBytes(16).toString("hex");

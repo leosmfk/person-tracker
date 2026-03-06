@@ -15,6 +15,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 
 interface User {
   id: string;
@@ -139,22 +147,30 @@ export default function AdminPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              <select
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="border-input bg-background flex h-9 w-full rounded-md border px-3 py-1 text-sm"
+              <Label>Role</Label>
+              <Combobox
+                items={["User", "Admin"]}
+                value={role === "admin" ? "Admin" : "User"}
+                onValueChange={(val) => val && setRole(val.toLowerCase())}
               >
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
+                <ComboboxInput placeholder="Selecione o role" className="w-full" />
+                <ComboboxContent>
+                  <ComboboxEmpty>Nenhum resultado.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
             </div>
 
             {error && <p className="text-destructive text-sm">{error}</p>}
             {success && <p className="text-sm text-green-600">{success}</p>}
 
-            <Button type="submit" className="w-full" disabled={creating}>
+            <Button type="submit" className="mt-2 w-full" disabled={creating}>
               {creating ? "Criando..." : "Criar Usuario"}
             </Button>
           </form>

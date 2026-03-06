@@ -61,7 +61,7 @@ export function getColumns(): ColumnDef<PersonRow>[] {
           href={row.getValue("linkedinUrl")}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary hover:underline"
+          className="text-sky-600 hover:underline"
         >
           {row.getValue("linkedinUrl")}
         </a>
